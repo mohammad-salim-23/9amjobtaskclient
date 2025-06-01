@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,6 +20,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { registerUser } from "@/services/AuthService";
 import NLButton from "@/components/ui/core/NLButton/NLbutton";
+import { registrationSchema } from "./registerValidation";
 
 
 const RegisterForm = () => {
@@ -26,7 +28,7 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
-    
+    resolver: zodResolver(registrationSchema),
   });
 
   const {
