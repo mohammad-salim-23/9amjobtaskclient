@@ -25,7 +25,7 @@ const DashboardPage = () => {
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
       await logout();
-      router.push("/login");
+      router.push("/");
     }
   };
 
