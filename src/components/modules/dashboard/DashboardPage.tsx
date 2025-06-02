@@ -40,9 +40,7 @@ const DashboardPage = () => {
   };
 
   const handleShopClick = (shopName: string) => {
-  // Use localtest.me domain for local dev subdomains
-  const shopUrl = `http://${shopName}.localtest.me:5173`;
-  window.location.href = shopUrl;
+  router.push(`/shop/${shopName}`);
 };
   return (
     <div className="p-6 grid grid-cols-1 gap-2">

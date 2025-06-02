@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // Enable React strict mode
   reactStrictMode: true,
 
-  // ⚡ SWC minification (default: true)
+  //  SWC minification (default: true)
   swcMinify: true,
 
   //  (Optional) Custom domains / redirects / rewrites

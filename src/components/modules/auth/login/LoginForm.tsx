@@ -20,7 +20,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { loginUser } from "@/services/AuthService";
 import NLButton from "@/components/ui/core/NLButton/NLbutton";
 import { z } from "zod";
-
+import { Checkbox } from "@/components/ui/checkbox";
 // Login form validation schema
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -30,7 +30,8 @@ const loginSchema = z.object({
 const LoginForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
+ 
+  const[rememberMe , setRememberMe] = useState(false);
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -41,7 +42,7 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const res = await loginUser(data);
+      const res = await loginUser({...data, rememberMe});
       console.log("Login Response:", res);
 
       if (res?.message === "Login successful") {
@@ -139,7 +140,21 @@ const LoginForm = () => {
                   )}
                 />
               </div>
-
+    {/* Remember Me */}
+         <div className="flex items-center gap-2 ">
+            <Checkbox
+            className="cursor-pointer"
+            id="rememberMe"
+            checked={rememberMe}
+            onCheckedChange= {(value: boolean)=>setRememberMe(value as boolean)}
+            />
+             <label
+                  htmlFor="rememberMe"
+                  className="text-sm cursor-pointer select-none"
+                >
+                  Remember Me
+                </label>
+         </div>
               {/* Submit button */}
               <div>
                 <NLButton variant="secondary" className="w-full" type="submit">
