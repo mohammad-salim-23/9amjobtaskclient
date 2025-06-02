@@ -35,10 +35,13 @@ const RegisterForm = () => {
 
 const onSubmit: SubmitHandler<FieldValues> = async (data) => {
   try {
-    const shopNamesArray = data.shopNames
+    // splitting 
+    const decodedShopNames = decodeURIComponent(data.shopNames);
+
+    const shopNamesArray = decodedShopNames
       .split(",")
       .map((name: string) => name.trim())
-      .filter((name: string) => name.length > 0); // 
+      .filter((name: string) => name.length > 0);
 
     const finalData = {
       ...data,
@@ -47,6 +50,7 @@ const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 
     const res = await registerUser(finalData);
     console.log("Registration Response:", res);
+
     if (res?.message === "User created successfully") {
       Swal.fire({
         icon: "success",
@@ -71,6 +75,7 @@ const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     });
   }
 };
+
 
   return (
     <div className="max-w-[95%] md:max-w-[70%] mx-auto px-5">
