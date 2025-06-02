@@ -44,7 +44,7 @@ const LoginForm = () => {
       const res = await loginUser(data);
       console.log("Login Response:", res);
 
-      if (res?.success) {
+      if (res?.message === "Login successful") {
         Swal.fire({
           icon: "success",
           title: "Success!",
