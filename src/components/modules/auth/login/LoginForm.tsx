@@ -45,6 +45,7 @@ const LoginForm = () => {
       console.log("Login Response:", res);
 
       if (res?.message === "Login successful") {
+        localStorage.setItem("accessToken", res.token);
         Swal.fire({
           icon: "success",
           title: "Success!",
