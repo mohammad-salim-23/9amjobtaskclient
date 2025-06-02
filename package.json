@@ -23,6 +23,7 @@
     "react-icons": "^5.5.0",
     "sonner": "^2.0.4",
     "sooner": "^1.1.4",
+    "sweetalert2": "^11.22.0",
     "tailwind-merge": "^3.3.0",
     "zod": "^3.25.46"
   },

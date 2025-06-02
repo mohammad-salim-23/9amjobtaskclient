@@ -12,8 +12,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
-
+import Swal from "sweetalert2";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
@@ -21,7 +20,6 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { registerUser } from "@/services/AuthService";
 import NLButton from "@/components/ui/core/NLButton/NLbutton";
 import { registrationSchema } from "./registerValidation";
-
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -35,19 +33,44 @@ const RegisterForm = () => {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    try {
-      const res = await registerUser(data);
-      if (res?.success) {
-        toast.success(res?.message);
+const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  try {
+    const shopNamesArray = data.shopNames
+      .split(",")
+      .map((name: string) => name.trim())
+      .filter((name: string) => name.length > 0); // 
+
+    const finalData = {
+      ...data,
+      shopNames: shopNamesArray,
+    };
+
+    const res = await registerUser(finalData);
+    console.log("Registration Response:", res);
+    if (res?.message === "User created successfully") {
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: res?.message || "Registration successful.",
+      }).then(() => {
         router.push("/login");
-      } else {
-        toast.error(res?.message);
-      }
-    } catch (error: any) {
-      console.error(error);
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: res?.message || "Something went wrong. Please try again.",
+      });
     }
-  };
+  } catch (error: any) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: error?.message || "Something went wrong. Please try again.",
+    });
+  }
+};
 
   return (
     <div className="max-w-[95%] md:max-w-[70%] mx-auto px-5">
@@ -106,7 +129,11 @@ const RegisterForm = () => {
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
                         >
-                          {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+                          {showPassword ? (
+                            <Eye size={18} />
+                          ) : (
+                            <EyeOff size={18} />
+                          )}
                         </button>
                       </div>
                       <FormMessage />
@@ -139,12 +166,15 @@ const RegisterForm = () => {
 
               {/* Submit button */}
               <div>
-                <NLButton variant="primary" className="w-full" type="submit">
+                <NLButton variant="secondary" className="w-full" type="submit">
                   {isSubmitting ? "Registering..." : "Register"}
                 </NLButton>
                 <p className="text-center text-sm mt-4">
                   Already have an account?{" "}
-                  <Link href="/login" className="text-primary-500 font-semibold ">
+                  <Link
+                    href="/login"
+                    className="text-primary-500 font-semibold "
+                  >
                     Login Now
                   </Link>
                 </p>
