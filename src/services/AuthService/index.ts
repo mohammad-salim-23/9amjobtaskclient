@@ -64,21 +64,7 @@ export const getCurrentUser = async () => {
 
 
 export const logout = async () => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/logout`, {
-      method: "POST",
-      credentials: "include",  // for send cookies
-    });
-
-    if (res.ok) {
-
-      return { message: "Logout successful" };
-    } else {
-      throw new Error("Logout failed");
-    }
-  } catch (error) {
-    return Error(error instanceof Error ? error.message : String(error));
-  }
-};
+    (await cookies()).delete("accessToken");
+}
 
 

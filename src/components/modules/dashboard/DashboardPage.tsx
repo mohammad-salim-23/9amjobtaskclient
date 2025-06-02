@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { getCurrentUser, logout } from "@/services/AuthService";
 import profile from "../../../app/assets/images/profile.jpg";
 import Image from "next/image";
+import Swal from "sweetalert2";
 const DashboardPage = () => {
   const [user, setUser] = useState<any>(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false); // Toggle profile menu
@@ -20,20 +21,29 @@ const DashboardPage = () => {
     fetchUser();
   }, []);
 
-  const handleLogout = async () => {
-    const confirmLogout = confirm("Are you sure you want to logout?");
-    if (confirmLogout) {
+   const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Logout',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
       localStorage.removeItem("accessToken");
       await logout();
       router.push("/");
+      Swal.fire('Logged Out!', 'You have been successfully logged out.', 'success');
     }
   };
 
   const handleShopClick = (shopName: string) => {
-    const shopUrl = `http://${shopName}.localhost:5173`;
-    window.location.href = shopUrl;
-  };
-
+  // Use localtest.me domain for local dev subdomains
+  const shopUrl = `http://${shopName}.localtest.me:5173`;
+  window.location.href = shopUrl;
+};
   return (
     <div className="p-6 grid grid-cols-1 gap-2">
       <div className="flex justify-between items-center">
