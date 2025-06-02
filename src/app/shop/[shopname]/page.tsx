@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 
 export default function ShopPage() {
   const params = useParams();
-  const shopName = params.shopname as string;
+  const shopName = decodeURIComponent(params.shopname as string);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
