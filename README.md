@@ -55,6 +55,8 @@ dev	next dev	Runs the app in development mode.
 build	next build	Builds the app for production.
 start	next start	Starts the production server.
 
+server-live-link: https://9amjobtaskserver.vercel.app
+
 
 
 📌 Notes
